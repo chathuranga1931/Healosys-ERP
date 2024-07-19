@@ -8,7 +8,7 @@ $q = isset($_GET["q"]) ? $_GET["q"] : '';
 if (strlen($q) > 0) {
     $db = new Database();
     $connection = $db->getConnection();
-    $sql = "SELECT ProductName FROM products WHERE ProductName LIKE ?";
+    $sql = "SELECT ProductName FROM products WHERE ProductName LIKE ? LIMIT 10";
     $stmt = $connection->prepare($sql);
     $search = "%".$q."%";
     $stmt->bind_param('s', $search);
@@ -18,9 +18,9 @@ if (strlen($q) > 0) {
     $hint = "";
     while ($row = $result->fetch_assoc()) {
         if ($hint == "") {
-            $hint = $row['ProductName'];
+            $hint = "<div class='suggestion-item' onclick=\"selectSuggestion('" . $row['ProductName'] . "')\">" . $row['ProductName'] . "</div>";
         } else {
-            $hint .= "<br />" . $row['ProductName'];
+            $hint .= "<div class='suggestion-item' onclick=\"selectSuggestion('" . $row['ProductName'] . "')\">" . $row['ProductName'] . "</div>";
         }
     }
 

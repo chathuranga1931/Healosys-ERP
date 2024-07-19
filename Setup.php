@@ -4,7 +4,7 @@ require_once('Database.php');
 
 class Setup {
     private $db;
-    private $version = '1.4'; // Define the version of the setup file
+    private $version = '1.7'; // Define the version of the setup file
 
     public function __construct() {
         $this->db = new Database();
