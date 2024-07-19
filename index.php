@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: login.php');
+    exit;
+}
 
 require_once('Setup.php');
 
@@ -16,7 +22,6 @@ if ($currentVersion === null) {
 } else {
     echo "Already Configured.<br>";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -108,6 +113,17 @@ if ($currentVersion === null) {
     </script>
 </head>
 <body>
+
+<h1>Database and Live Search</h1>
+
+<p><a href="backup_database.php">Go to Database Backup</a></p>
+
+<?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
+    <p><a href="logout.php">Logout</a></p>
+    <p><a href="configuration.php">Configuration</a></p>
+<?php else: ?>
+    <p><a href="login.php">Login</a></p>
+<?php endif; ?>
 
 <form autocomplete="off">
     <input type="text" size="30" id="searchInput">

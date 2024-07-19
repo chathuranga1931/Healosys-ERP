@@ -4,20 +4,19 @@ require_once('Database.php');
 
 class Setup {
     private $db;
-    private $version = '1.7'; // Define the version of the setup file
+    private $version = '1.8'; // Define the version of the setup file
 
     public function __construct() {
         $this->db = new Database();
+        $this->run();
     }
 
-    public function run($injectTestData = false) {
+    public function run() {
         $this->createConfigTable();
         $this->insertVersion();
         $this->createProductTable();
-
-        if ($injectTestData) {
-            $this->injectTestData();
-        }
+        $this->createUsersTable();
+        $this->insertDefaultAdmin();
     }
 
     private function createConfigTable() {
@@ -27,7 +26,6 @@ class Setup {
                 version VARCHAR(10) NOT NULL
             )
         ";
-
         $this->db->execute($sql);
         echo "Table 'config' created successfully.<br>";
     }
@@ -37,7 +35,6 @@ class Setup {
             INSERT INTO config (version) VALUES ('$this->version')
             ON DUPLICATE KEY UPDATE version = '$this->version'
         ";
-
         $this->db->execute($sql);
         echo "Version '$this->version' inserted into 'config' table.<br>";
     }
@@ -51,23 +48,34 @@ class Setup {
                 ProductCategory VARCHAR(100) NOT NULL
             )
         ";
-
         $this->db->execute($sql);
         echo "Table 'products' created successfully.<br>";
     }
 
-    private function injectTestData() {
-        include('Setup_TestData.php');
+    private function createUsersTable() {
+        $sql = "
+            CREATE TABLE IF NOT EXISTS users (
+                ID INT AUTO_INCREMENT PRIMARY KEY,
+                username VARCHAR(50) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL
+            )
+        ";
+        $this->db->execute($sql);
+        echo "Table 'users' created successfully.<br>";
     }
 
+    private function insertDefaultAdmin() {
+        $username = 'admin';
+        $password = password_hash('password', PASSWORD_DEFAULT);
+        $sql = "
+            INSERT INTO users (username, password) VALUES ('$username', '$password')
+            ON DUPLICATE KEY UPDATE username = username
+        ";
+        $this->db->execute($sql);
+        echo "Default admin user inserted successfully.<br>";
+    }
+    
     public function getCurrentVersion() {
-        $sql = "SHOW TABLES LIKE 'config'";
-        $result = $this->db->query($sql);
-
-        if ($result->num_rows == 0) {
-            return null; // Table does not exist
-        }
-
         $sql = "SELECT version FROM config ORDER BY ID DESC LIMIT 1";
         $result = $this->db->fetchOne($sql);
         return $result ? $result['version'] : null;
@@ -77,5 +85,8 @@ class Setup {
         return $this->version;
     }
 }
+
+// Run the setup
+new Setup();
 
 ?>
