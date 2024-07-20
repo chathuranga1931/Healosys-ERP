@@ -1,5 +1,5 @@
 <?php
-require_once('Database.php');
+require_once('../libs/Database.php');
 
 $db = new Database();
 $connection = $db->getConnection();

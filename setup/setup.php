@@ -1,9 +1,9 @@
 <?php
 
-require_once('database.php');
-require_once('setup_category.php');
-require_once('setup_supplier.php');
-require_once('setup_item.php');
+require_once('../libs/database.php');
+require_once('../category/setup_category.php');
+require_once('../supplier/setup_supplier.php');
+require_once('../item/setup_item.php');
 
 class Setup {
     private $db;

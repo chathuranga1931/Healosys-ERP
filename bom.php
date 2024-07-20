@@ -7,7 +7,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 ?>
 
-
 <?php include 'ui/header.php'; ?>
 
 <style>
@@ -50,36 +49,37 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     
 </style>
 
+<h5>Select Product for setting Bom</h5>
 <div id="itemDetails-2" class="item-details" style="display:block;">
-    <form autocomplete="off">
-        <div class="row">
-            <label for="searchInput">Item Search :</label>
-            <input type="text"   id="searchInput" placeholder="Search for items...">
-            <div id="livesearch"></div>
-        </div>
-    </form>
-
-    <br>
-
+    <div class="row">
+        <form autocomplete="off">
+            <div class="row">
+                <label for="searchInput-product">Product Search :</label>
+                <input type="text"   id="searchInput-product" placeholder="Search for Products...">
+                <div id="livesearch-product"></div>        
+            </div>
+        </form>
+    </div>
     <div class="row">
         <div class="col-6">
             <div class="row">
                 <label for="item_code">Item Code:</label>
-                <input type="text" id="item_code" name="item_code" maxlength="15" required>
+                <input type="text" id="item_code" name="item_code" maxlength="15" required readonly>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <label for="category_id">Category ID:</label>
-                <select id="category_id"  name="category_id" required></select>
-            </div>
+                <select id="category_id"  name="category_id" required readonly></select> -->
+                <!-- <input type="text" id="category_id" name="category_id" required readonly> -->
+            <!-- </div> -->
             <div class="row">
                 <label for="name">Item Name:</label>
-                <input type="text"   id="name" name="name" required>
+                <input type="text"   id="name" name="name" required readonly>
             </div>
             <div class="row">
                 <label for="description">Description:</label>
-                <textarea id="description"  name="description" rows="4"></textarea>
+                <textarea id="description"  name="description" rows="4" readonly></textarea>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <label for="price">Price:</label>
                 <input type="number" step="0.01"   id="price" name="price" value="0.00">
             </div>
@@ -94,53 +94,66 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             <div class="row">
                 <label for="supplier_id">Supplier ID:</label>
                 <select id="supplier_id"  name="supplier_id" required></select>
-            </div>
+            </div> -->
             <br>
         </div>
 
         <div class="col-6">
             <div class="col-6">
-                <label for="itemImage">Image:</label>
-                <input type="file" class="form-control-file" name="itemImage"  id="id_ItemImage" onchange="previewFile()">
+                <!-- <label for="itemImage">Image:</label>
+                <input type="file" class="form-control-file" name="itemImage"  id="id_ItemImage" onchange="previewFile()"> -->
                 <img id="preview" src="#" alt="Image preview" class="img-fluid mt-2">
             </div>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-12 text-right">
             <button id="updateButton" class="btn btn-primary mr-2">Update Item</button>
             <button id="addItemButton" class="btn btn-secondary">Add New Item</button>
         </div>
-    </div>
-
-    <!-- <form autocomplete="off">
-        <label for="searchInput">Item Search :</label>
-        <input type="text" size="30" id="searchInput" placeholder="Search for items...">
-        <div id="livesearch"></div>
-    </form> -->
-
-    <!-- <label for="item_code">Item Code:</label>
-    <input type="text" id="item_code" name="item_code" maxlength="15" required><br>
-    <label for="name">Item Name:</label>
-    <input type="text" id="name" name="name" required><br>
-    <label for="category_id">Category ID:</label>
-    <select id="category_id" name="category_id" required></select><br>
-    <label for="description">Description:</label>
-    <textarea id="description" name="description" rows="4" cols="50"></textarea><br>
-    <label for="price">Price:</label>
-    <input type="number" step="0.01" id="price" name="price" value="0.00"><br>
-    <label for="cost">Cost:</label>
-    <input type="number" step="0.01" id="cost" name="cost" value="0.00"><br>
-    <label for="reorder_level">Reorder Level:</label>
-    <input type="number" id="reorder_level" name="reorder_level" value="0"><br>
-    <label for="supplier_id">Supplier ID:</label>
-    <select id="supplier_id" name="supplier_id" required></select><br>
-    <input type="file" name="itemImage" id="id_ItemImage" onchange="previewFile()"><br><br>
-    <img id="preview" src="#" alt="Image preview"><br>
-    <button id="updateButton">Update Item</button>
-    <button id="addItemButton">Add New Item</button> -->
+    </div> -->
 </div>
 
-<script src="item/item_helper.js"></script>
+<!-- <br> -->
+
+<h5>Bill of Materials</h5>
+<div class="item-details" style="display:block;">
+    <div class="row" id="id_bom_table_raw" style="display:block;">
+        <div class="col-6">
+            <div id="id_div_bom_table">
+            </div>
+        </div>
+        <div class="col-6">
+            <button id="saveBom" class="btn btn-secondary">Save BoM</button>
+        </div>
+    </div>
+</div>
+<br>
+<h5>Select Item</h5>
+<div class="item-details" style="display:block;">
+    <div class="row">
+        <form autocomplete="off">
+            <div class="row">
+                <label for="searchInput-item">Item Search :</label>
+                <input type="text"   id="searchInput-item" placeholder="Search for items...">
+                <div id="livesearch-item"></div>        
+            </div>
+        </form>
+    </div>
+
+    <div class="row" id="id_product_details_raw" style="display:none;">
+        <div class="col-6">
+            <div id="id_product_details">
+            </div>
+        </div>
+        <div class="col-6">
+            <button id="addItemButton" class="btn btn-secondary">Add to Bom</button>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<script src="bom/bom_helper.js"></script>
 
 <?php include 'ui/footer.php'; ?>

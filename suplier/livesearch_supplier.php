@@ -1,5 +1,5 @@
 <?php
-require_once('Database.php');
+require_once('../libs/Database.php');
 
 $db = new Database();
 $connection = $db->getConnection();
@@ -7,7 +7,7 @@ $connection = $db->getConnection();
 $q = isset($_GET['q']) ? $_GET['q'] : '';
 
 if (strlen($q) > 0) {
-    $stmt = $connection->prepare("SELECT name FROM items WHERE name LIKE ?");
+    $stmt = $connection->prepare("SELECT supplier_name FROM suppliers WHERE supplier_name LIKE ?");
     $searchTerm = "%$q%";
     $stmt->bind_param('s', $searchTerm);
     $stmt->execute();
@@ -15,7 +15,7 @@ if (strlen($q) > 0) {
 
     $suggestions = [];
     while ($row = $result->fetch_assoc()) {
-        $suggestions[] = $row['name'];
+        $suggestions[] = $row['supplier_name'];
     }
 
     $stmt->close();
@@ -24,7 +24,7 @@ if (strlen($q) > 0) {
         echo "no suggestion";
     } else {
         foreach ($suggestions as $suggestion) {
-            echo "<div class='suggestion-item' onclick='selectSuggestion(\"" . htmlspecialchars($suggestion, ENT_QUOTES) . "\")'>" . htmlspecialchars($suggestion) . "</div>";
+            echo "<div class='suggestion-item' onclick='selectSuggestion(\"" . htmlspecialchars($suggestion) . "\")'>" . htmlspecialchars($suggestion) . "</div>";
         }
     }
 }

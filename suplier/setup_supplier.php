@@ -1,6 +1,6 @@
 <?php
 
-require_once('database.php');
+require_once('../libs/Database.php');
 
 class SetupSupplier {
     private $db;
