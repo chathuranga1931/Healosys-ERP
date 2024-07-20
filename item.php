@@ -39,6 +39,16 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             margin-bottom: 10px;
             width: 300px;
         }
+        #preview {
+            max-width: 150px;
+            max-height: 150px;
+            display: none;
+        }
+        #preview_new {
+            max-width: 150px;
+            max-height: 150px;
+            display: none;
+        }
     </style>
     <script>
     var currentFocus = -1;
@@ -159,6 +169,38 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 });
             })
             .catch(error => console.error('Error loading suppliers:', error));
+    }
+
+    function previewFile() {
+        const preview = document.getElementById('preview');
+        const file = document.getElementById('file').files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener('load', function() {
+            // Convert the file to base64 string
+            preview.src = reader.result;
+            preview.style.display = 'block';
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function previewFile_new() {
+        const preview = document.getElementById('preview_new');
+        const file = document.getElementById('file_new').files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener('load', function() {
+            // Convert the file to base64 string
+            preview.src = reader.result;
+            preview.style.display = 'block';
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
     }
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -297,6 +339,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <select id="supplier_id" name="supplier_id" required></select><br>
         <label for="photo_url">Photo URL:</label>
         <input type="text" id="photo_url" name="photo_url"><br><br>
+        <input type="file" name="file" id="file" onchange="previewFile()"><br><br>
+        <img id="preview" src="#" alt="Image preview"><br><br>
         <input type="submit" value="Update Item">
     </form>
 </div>
@@ -322,6 +366,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <select id="supplier_id_new" name="supplier_id" required></select><br>
     <label for="photo_url_new">Photo URL:</label>
     <input type="text" id="photo_url_new" name="photo_url"><br><br>
+    <input type="file" name="file" id="file_new" onchange="previewFile_new()"><br><br>
+    <img id="preview_new" src="#" alt="Image preview"><br><br>
     <input type="submit" value="Add Item">
 </form>
 </div>
