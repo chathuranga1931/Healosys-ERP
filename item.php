@@ -30,6 +30,11 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             width: 150px;
         }
 
+        .item-details-2 label {
+            display: inline-block;
+            width: 150px;
+        }
+
         .item-details input, .item-details select, .item-details textarea {
             margin-bottom: 10px;
             width: 300px;
@@ -86,6 +91,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 document.getElementById('cost').value = item.cost;
                 document.getElementById('reorder_level').value = item.reorder_level;
                 document.getElementById('supplier_id').value = item.supplier_id;
+                document.getElementById('photo_url').value = item.photo_url || '';
                 document.getElementById('itemDetails').style.display = 'block';
             }
         };
@@ -199,14 +205,66 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        var action = document.getElementById('addItemForm').dataset.action;
+        var form = event.target;
+        var action = form.dataset.action;
+        var formData = new FormData(form);
+
         if (action === 'update') {
-            updateItem();
-        } else {
-            addItem();
+            formData.append('update', true);
         }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "db_item.php", true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert(action.charAt(0).toUpperCase() + action.slice(1) + ' successful');
+                form.reset();
+                loadCategories();
+                loadSuppliers();
+                if (action === 'update') {
+                    document.getElementById('itemDetails').style.display = 'none';
+                }
+            }
+        };
+        xhr.send(formData);
     }
-    </script>
+
+    function loadCategories() {
+        fetch('db_category.php')
+            .then(response => response.json())
+            .then(categories => {
+                populateSelect('category_id', categories);
+                populateSelect('category_id_new', categories);
+            })
+            .catch(error => console.error('Error loading categories:', error));
+    }
+
+    function loadSuppliers() {
+        fetch('db_supplier.php')
+            .then(response => response.json())
+            .then(suppliers => {
+                populateSelect('supplier_id', suppliers);
+                populateSelect('supplier_id_new', suppliers);
+            })
+            .catch(error => console.error('Error loading suppliers:', error));
+    }
+
+    function populateSelect(selectId, items) {
+        var select = document.getElementById(selectId);
+        select.innerHTML = ''; // Clear existing options
+        items.forEach(item => {
+            var option = document.createElement('option');
+            option.value = item.CategoryID || item.supplier_id;
+            option.text = item.CategoryType || item.supplier_name;
+            select.add(option);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        loadCategories();
+        loadSuppliers();
+    });
+</script>
 </head>
 <body>
 
@@ -236,11 +294,14 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <label for="reorder_level">Reorder Level:</label>
         <input type="number" id="reorder_level" name="reorder_level" value="0"><br>
         <label for="supplier_id">Supplier ID:</label>
-        <select id="supplier_id" name="supplier_id" required></select><br><br>
+        <select id="supplier_id" name="supplier_id" required></select><br>
+        <label for="photo_url">Photo URL:</label>
+        <input type="text" id="photo_url" name="photo_url"><br><br>
         <input type="submit" value="Update Item">
     </form>
 </div>
 
+<div id="itemDetails-2" class="item-details" style="display:block;">
 <h2>Add New Item</h2>
 <form id="addItemFormNew" data-action="add" onsubmit="handleSubmit(event);">
     <label for="item_code_new">Item Code:</label>
@@ -258,9 +319,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <label for="reorder_level_new">Reorder Level:</label>
     <input type="number" id="reorder_level_new" name="reorder_level" value="0"><br>
     <label for="supplier_id_new">Supplier ID:</label>
-    <select id="supplier_id_new" name="supplier_id" required></select><br><br>
+    <select id="supplier_id_new" name="supplier_id" required></select><br>
+    <label for="photo_url_new">Photo URL:</label>
+    <input type="text" id="photo_url_new" name="photo_url"><br><br>
     <input type="submit" value="Add Item">
 </form>
+</div>
 
 <p><a href="logout.php">Logout</a></p>
 <p><a href="index.php">Back to Home</a></p>
