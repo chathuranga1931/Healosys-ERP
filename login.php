@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('Database.php');
+require_once('database.php');
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];

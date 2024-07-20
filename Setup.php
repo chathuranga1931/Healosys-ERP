@@ -1,22 +1,41 @@
 <?php
 
-require_once('Database.php');
+require_once('database.php');
+require_once('setup_category.php');
+require_once('setup_supplier.php');
+require_once('setup_item.php');
 
 class Setup {
     private $db;
-    private $version = '1.8'; // Define the version of the setup file
+    private $setup_category;
+    private $setup_supplier;
+    private $setup_items;
+
+    private $version = '2.074'; // Define the version of the setup file
 
     public function __construct() {
         $this->db = new Database();
-        $this->run();
+        $this->setup_category = new SetupCategory();
+        $this->setup_supplier = new SetupSupplier();
+        $this->setup_items = new SetupItem();
     }
 
-    public function run() {
+    public function run($injectTestData = false) {
         $this->createConfigTable();
         $this->insertVersion();
         $this->createProductTable();
         $this->createUsersTable();
         $this->insertDefaultAdmin();
+        $this->setup_category->createCategoryTable(); // Call the category setup
+        $this->setup_supplier->createSupplierTable(); // Call the supplier setup
+        $this->setup_items->createItemTable(); // Call the item setup
+
+        if ($injectTestData) {
+            $this->injectTestData();
+            $this->setup_category->insertCategories(); // insert default catogories
+            $this->setup_supplier->addSampleData();
+            $this->setup_items->addSampleItems();            
+        }
     }
 
     private function createConfigTable() {
@@ -74,7 +93,11 @@ class Setup {
         $this->db->execute($sql);
         echo "Default admin user inserted successfully.<br>";
     }
-    
+
+    private function injectTestData() {
+        include('setup_testdata.php');
+    }
+
     public function getCurrentVersion() {
         $sql = "SELECT version FROM config ORDER BY ID DESC LIMIT 1";
         $result = $this->db->fetchOne($sql);

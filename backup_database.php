@@ -1,6 +1,12 @@
 <?php
+session_start();
 
-require_once('Database.php');
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: login.php');
+    exit;
+}
+
+require_once('database.php');
 
 class BackupDatabase {
     private $db;
@@ -44,14 +50,27 @@ class BackupDatabase {
         $timestamp = $dateTime->format('Y-m-d_H-i-s');
         $filename = "{$this->backupDir}{$this->dbName}_{$timestamp}.sql";
 
-        $command = "mysqldump --host={$this->dbHost} --user={$this->dbUser} --password={$this->dbPass} {$this->dbName} > {$filename}";
+        $command = sprintf(
+            'mysqldump --host=%s --user=%s --password=%s %s > %s 2>&1',
+            escapeshellarg($this->dbHost),
+            escapeshellarg($this->dbUser),
+            escapeshellarg($this->dbPass),
+            escapeshellarg($this->dbName),
+            escapeshellarg($filename)
+        );
 
-        system($command, $output);
+        // Log the command for debugging purposes
+        file_put_contents(__DIR__ . '/backup_log.txt', "Running command: $command\n", FILE_APPEND);
 
-        if ($output !== 0) {
-            die('Error exporting database: ' . $output);
+        exec($command, $output, $returnVar);
+
+        // Log the output and return code for debugging purposes
+        file_put_contents(__DIR__ . '/backup_log.txt', "Output: " . implode("\n", $output) . "\nReturn code: $returnVar\n", FILE_APPEND);
+
+        if ($returnVar !== 0) {
+            die('Error exporting database. Check backup_log.txt for details.');
         }
-        
+
         echo "Database backed up successfully to $filename<br>";
     }
 
@@ -98,6 +117,8 @@ $backups = $backup->getBackups();
 <form method="post">
     <button type="submit" name="backup">Create Backup</button>
 </form>
+
+<p><a href="logout.php">Logout</a></p>
 
 </body>
 </html>

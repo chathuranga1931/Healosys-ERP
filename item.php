@@ -5,32 +5,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: login.php');
     exit;
 }
-
-require_once('setup.php');
-
-$setup = new Setup();
-$currentVersion = $setup->getCurrentVersion();
-
-echo "Current version " . $currentVersion . "...<br>";
-echo "Previous version " . $setup->getVersion() . "...<br>";
-
-$injectTestData = isset($_GET['injectTestData']) ? filter_var($_GET['injectTestData'], FILTER_VALIDATE_BOOLEAN) : false;
-
-if ($currentVersion === null) {
-    echo "No version found. Running setup...<br>";
-    $setup->run($injectTestData);
-} elseif ($currentVersion < $setup->getVersion()) {
-    echo "Old version detected. Running setup...<br>";
-    $setup->run($injectTestData);
-} else {
-    echo "Already Configured.<br>";
-}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Live Search</title>
+    <title>Item Search</title>
     <style>
         .suggestion-item {
             cursor: pointer;
@@ -65,7 +45,7 @@ if ($currentVersion === null) {
                 currentFocus = -1; // Reset focus when new results are loaded
             }
         }
-        xmlhttp.open("GET", "livesearch.php?q=" + str, true);
+        xmlhttp.open("GET", "livesearch_item.php?q=" + str, true);
         xmlhttp.send();
     }
 
@@ -117,28 +97,16 @@ if ($currentVersion === null) {
 </head>
 <body>
 
-<h1>Inventory Managment System, Smart Autotmation Systems</h1>
+<h1>Item Search</h1>
 
-<p><a href="backup_database.php">Go to Database Backup</a></p>
-
-<?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-    <p><a href="configuration.php">Configurations</a></p>
-    <p><a href="supplier.php">Suppliers</a></p>
-    <p><a href="item.php">Items</a></p>
-<?php else: ?>
-    <p><a href="login.php">Login</a></p>
-<?php endif; ?>
 
 <form autocomplete="off">
     <input type="text" size="30" id="searchInput">
     <div id="livesearch"></div>
 </form>
 
-<?php if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true): ?>
-    <p><a href="logout.php">Logout</a></p>
-<?php else: ?>
-    <p><a href="login.php">Login</a></p>
-<?php endif; ?>
+<p><a href="logout.php">Logout</a></p>
+<p><a href="index.php">Back to Home</a></p>
 
 </body>
 </html>

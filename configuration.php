@@ -6,7 +6,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 
-require_once('Database.php');
+require_once('database.php');
 
 if (isset($_POST['new_username']) && isset($_POST['new_password'])) {
     $new_username = $_POST['new_username'];

@@ -1,6 +1,6 @@
 <?php
 
-require_once('Database.php');
+require_once('database.php');
 
 // Get the q parameter from URL
 $q = isset($_GET["q"]) ? $_GET["q"] : '';
