@@ -1,4 +1,5 @@
-var currentFocus = -1;
+    
+    var currentFocus = -1;
     var previousValue = "";
 
     function showResult(str) {
@@ -26,7 +27,7 @@ var currentFocus = -1;
     }
 
     function selectSuggestion_item(value) {
-        document.getElementById("searchInput").value = value;
+        document.getElementById("searchInput").value = "";
         document.getElementById("livesearch").innerHTML = "";
         document.getElementById("livesearch").style.border = "0px";
         previousValue = value; // Update previousValue to prevent unnecessary AJAX calls
@@ -149,8 +150,8 @@ var currentFocus = -1;
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                if (response.status === 'success') {
-                    alert('Response : Success, File upload, successfully');
+                if (response.status === 'success') {                   
+                    show_status("Item Update Successfull, (Image)", 3, "SUCCESS");
                     if(callback != null){
                         callback(null, response.file_path);
                     }
@@ -189,7 +190,9 @@ var currentFocus = -1;
         const fileInput = document.getElementById('id_ItemImage');
 
         if (!itemCode || !itemName || !categoryId ) {
-            alert('Please fill out all required fields.');
+            // alert('Please fill out all required fields.');
+            show_status("Please fill out all required fields, WARNING", 3, "WARNING");
+            
             return;
         }
 
@@ -218,29 +221,25 @@ var currentFocus = -1;
         .then(response => response.json())
         .then(result => {
             if (result.success) {
-                alert('Response: ' + result.success);
+                // alert('Response: ' + result.success);              
                 if (fileInput.files.length > 0) {
                     const file = fileInput.files[0];
                     const fileExtension = file.name.split('.').pop();
                     // Handle file upload separately if needed
-                    uploadFile(file, itemCode+"."+fileExtension, function(err, filePath) {
-                        if (err) {
-                            console.error("File upload failed: ", err);
-                        } else {
-                            console.log("File uploaded successfully: ", filePath);
-                            // You can perform further actions here if needed
-                        }
-                    });
+                    uploadFile(file, itemCode+"."+fileExtension);
                 }
                 else{
-                    alert('Response : ' + result.message);
+                    // alert('Response : ' + result.message);
+                    show_status("Item Updated Success (No Image), SUCCESS", 3, "SUCCESS");  
                 }                
             } else if (result.error) {
-                alert('Response: ' + result.error);
+                // alert('Response: ' + result.error);
+                show_status("Add or Update Failed, Server Response " + result.error, 3, "ERROR");  
             }           
         })
         .catch(error => {
-            alert('Error:', error);
+            // alert('Error:', error);
+            show_status("System Error " + error, 3, "ERROR");  
         });
     }
 

@@ -49,6 +49,10 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     
 </style>
 
+<h1>Product Management</h1>
+<br>
+<div class="section_line"></div>
+<br>
 <h5>Select Product for setting Bom</h5>
 <div id="itemDetails-2" class="item-details" style="display:block;">
     <div class="row">

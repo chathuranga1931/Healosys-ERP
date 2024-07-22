@@ -1,4 +1,5 @@
-var currentFocus = -1;
+
+    var currentFocus = -1;
     var previousValue = "";
 
     function showResult(str, type) {
@@ -32,15 +33,15 @@ var currentFocus = -1;
     }
 
     function selectSuggestion_product(value) {
-        document.getElementById("searchInput-product").value = value;
+        document.getElementById("searchInput-product").value = "";
         document.getElementById("livesearch-product").innerHTML = "";
         document.getElementById("livesearch-product").style.border = "0px";
-        previousValue = value; // Update previousValue to prevent unnecessary AJAX calls
+        previousValue = value; // Update previousValue to prevent unnecessary AJAX calls        
         fetch_product_details(value);
     }
 
     function selectSuggestion_item(value) {
-        document.getElementById("searchInput-item").value = value;
+        document.getElementById("searchInput-item").value = "";
         document.getElementById("livesearch-item").innerHTML = "";
         document.getElementById("livesearch-item").style.border = "0px";
         previousValue = value; // Update previousValue to prevent unnecessary AJAX calls
@@ -270,7 +271,8 @@ var currentFocus = -1;
         
         var new_qty = Number(quantity_of_item_selected);
         if(new_qty < 0 ){
-            alert("Please enter a valid quantity");
+            // alert("Please enter a valid quantity");
+            show_status("Please enter a valid quantity", 3, "ERROR");
             return;
         }
 
@@ -405,7 +407,8 @@ var currentFocus = -1;
         var item_code_element = document.getElementById("item_code");
 
         if(item_code_element.value === ""){
-            alert("Please select a product to save BOM");
+            // alert("Please select a product to save BOM");
+            show_status("Please select a product to save BOM", 3, "ERROR");
             return;
         }
 
@@ -427,10 +430,13 @@ var currentFocus = -1;
         })
         .then(response => response.text())
         .then(result => {
-            console.log('Success:', result);
+            // console.log('Success:', result);
+            show_status("Saving BOM, SUCCESS", 3, "SUCCESS");
+            
         })
         .catch(error => {
-            console.error('Error:', error);
+            // console.error('Error:', error);
+            show_status("Saving BOM, FAILED", 3, "ERROR");
         });
     }
 
@@ -445,7 +451,8 @@ var currentFocus = -1;
         items.forEach(function(item) {
             var new_qty = Number(item.quantity);
             if (new_qty < 0) {
-                alert("Please enter a valid quantity");
+                // alert("Please enter a valid quantity");
+                show_status("Please enter a valid quantity", 3, "ERROR");
                 return;
             }
             add_item_to_bom(item.itemCode, new_qty);               
@@ -465,10 +472,11 @@ var currentFocus = -1;
         .then(response => response.text())
         .then(result => {
             console.log('Success:', result);
-            update_bom_table_from_bom_file(result);
+            update_bom_table_from_bom_file(result);            
+            show_status("BOM Loaded from system, SUCCESS", 3, "SUCCESS");
         })
         .catch(error => {
-            console.error('Error:', error);
+            show_status("BOM Loaded from system, WARNING", 3, "WARNING");
         });       
     }
 

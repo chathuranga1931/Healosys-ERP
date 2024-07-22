@@ -6,8 +6,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 ?>
-
-
 <?php include 'ui/header.php'; ?>
 
 <style>
@@ -50,12 +48,18 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     
 </style>
 
-
-<h1>Item Managment</h1>
+<div id="id_page_title"> </div> 
 <br>
 <div class="section_line"></div>
 <br>
-<div id="itemDetails-2" class="item-details" style="display:block;">
+
+<div class="row">
+    <div id="id_div_item_list">
+        
+    </div>
+</div>
+
+<div id="itemDetails-2" class="item-details" style="display:none;">
     <form autocomplete="off">
         <div class="row">
             <label for="searchInput">Item Search :</label>
@@ -145,7 +149,13 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <button id="updateButton">Update Item</button>
     <button id="addItemButton">Add New Item</button> -->
 </div>
+<script>
+    function on_load(){
+        load_page_title('Item List');
+    }
+</script>
 
-<script src="item/item_helper.js"></script>
+<script src="libs/Common.js"></script>
+<script src="item/item_list_helper.js"></script>
 
 <?php include 'ui/footer.php'; ?>

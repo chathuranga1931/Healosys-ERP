@@ -21,9 +21,46 @@
             margin-left: 10px;
             margin-top: 10px;
         }
+        .section_line {
+            background-color: lightgrey;
+            border: 1px solid blue;
+        }
     </style>
 </head>
 <body>
+    <div class="row">
+        <div id="id_global_footer_status">
+            <script>
+                function show_status(message, duration_sec, type) {
+                    switch(type) {
+                        case 'ERROR':
+                            var alertElement = document.getElementById('id_global_footer_status');
+                            alertElement.innerHTML = '<div class="alert alert-danger" role="alert" align="center">' + message + '</div>';
+                            break;  
+                        case 'WARNING':
+                            var alertElement = document.getElementById('id_global_footer_status');
+                            alertElement.innerHTML = '<div class="alert alert-warning" role="alert" align="center">' + message + '</div>';
+                            break;
+                        case 'SUCCESS':
+                            var alertElement = document.getElementById('id_global_footer_status');
+                            alertElement.innerHTML = '<div class="alert alert-success" role="alert" align="center">' + message + '</div>';
+                            break;
+                        case 'INFO':
+                            default:
+                            var alertElement = document.getElementById('id_global_footer_status');
+                            alertElement.innerHTML = '<div class="alert alert-info" role="alert" align="center">' + message + '</div>';
+                            break;
+                    }
+                    alertElement.style.display = 'block';
+
+                    // Set a timeout to hide the alert after 5 seconds (5000 milliseconds)
+                    setTimeout(function() {
+                        alertElement.style.display = 'none'; // Hide the alert
+                    }, duration_sec*1000);
+                }
+            </script>
+        </div>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <!-- <a class="navbar-brand" href="#">HealoSys</a> -->
         <img src="https://assets.zyrosite.com/Aq260V4Dq2CJn0lp/logo-no-background-AR07Vg4zkkiZ55j3.svg" class="login-logo" alt="Logo">
@@ -52,7 +89,18 @@
                             </a>
                             <ul class="collapse" id="submenu1">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="item.php">Items</a>
+                                    <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#submenu1-1" aria-expanded="false" aria-controls="submenu1-1">Items</a>
+                                    <ul class="collapse" id="submenu1-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="item.php">Add Items</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="item_list.php">List Items</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="bom.php">Search Items</a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="supplier.php">Suppliers</a>
@@ -63,31 +111,28 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Work Orders
+                            <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#submenu2" aria-expanded="false" aria-controls="submenu2">
+                                Sales
                             </a>
+                            <ul class="collapse" id="submenu2">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Quotations</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Work Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Sales Orders</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
-                                Purchase Orders
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Orders
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Quotations
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Integrations
+                                Administration
                             </a>
                         </li>
                     </ul>
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
