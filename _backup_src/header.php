@@ -28,7 +28,7 @@
     </style>
 </head>
 <body>
-    <div class="row">
+    <!-- <div class="row">
         <div id="id_global_footer_status">
             <script>
                 function show_status(message, duration_sec, type) {
@@ -60,7 +60,7 @@
                 }
             </script>
         </div>
-    </div>
+    </div> -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <!-- <a class="navbar-brand" href="#">HealoSys</a> -->
         <img src="https://assets.zyrosite.com/Aq260V4Dq2CJn0lp/logo-no-background-AR07Vg4zkkiZ55j3.svg" class="login-logo" alt="Logo">
@@ -77,8 +77,8 @@
                 </li>
             </ul>
         </div>
-    </nav>
-    <div class="container-fluid">
+    </nav>   
+    <div class="container-fluid"> 
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
@@ -99,12 +99,6 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="bom.php">Search Items</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="po_add.php">Add Update PO</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="bom.php">List POs</a>
                                         </li>
                                     </ul>
                                 </li>

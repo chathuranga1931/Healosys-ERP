@@ -5,6 +5,7 @@ $db = new Database();
 $connection = $db->getConnection();
 
 $q = isset($_GET['q']) ? $_GET['q'] : '';
+$callBack = isset($_GET['oc']) ? $_GET['oc'] : 'selectSuggestion_OnClick';
 
 if (strlen($q) > 0) {
     $stmt = $connection->prepare("SELECT supplier_name FROM suppliers WHERE supplier_name LIKE ?");
@@ -24,7 +25,7 @@ if (strlen($q) > 0) {
         echo "no suggestion";
     } else {
         foreach ($suggestions as $suggestion) {
-            echo "<div class='suggestion-item' onclick='selectSuggestion(\"" . htmlspecialchars($suggestion) . "\")'>" . htmlspecialchars($suggestion) . "</div>";
+            echo "<div class='suggestion-item' onclick='$callBack(\"" . htmlspecialchars($suggestion) . "\")'>" . htmlspecialchars($suggestion) . "</div>";
         }
     }
 }

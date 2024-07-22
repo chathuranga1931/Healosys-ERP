@@ -77,9 +77,9 @@
                 </li>
             </ul>
         </div>
-    </nav>
-    <div class="container-fluid">
-        <div class="row">
+    </nav>    
+    <div class="row">
+        <div class="container-fluid">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
                     <ul class="nav flex-column">
@@ -99,12 +99,6 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="bom.php">Search Items</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="po_add.php">Add Update PO</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="bom.php">List POs</a>
                                         </li>
                                     </ul>
                                 </li>

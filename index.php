@@ -1,11 +1,20 @@
 
 <?php
+
+
+// if (!isset($_SESSION['configured']) || $_SESSION['configured'] !== true) {
+//     header('Location: setup/setup.php');
+//     exit;
+// }
+
 session_start();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: login.php');
+    $_SESSION['configured'] = false;
     exit;
 }
+
 ?>
 
 <?php include 'ui/header.php'; ?>

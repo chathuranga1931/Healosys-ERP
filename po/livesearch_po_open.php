@@ -5,18 +5,19 @@ $db = new Database();
 $connection = $db->getConnection();
 
 $q = isset($_GET['q']) ? $_GET['q'] : '';
-$callBack = isset($_GET['oc']) ? $_GET['oc'] : 'selectSuggestion_item';
+$callBack = isset($_GET['oc']) ? $_GET['oc'] : 'selectSuggestion_OnClick';
 
 if (strlen($q) > 0) {
-    $stmt = $connection->prepare("SELECT name FROM items WHERE name LIKE ? LIMIT 10");
+    $stmt = $connection->prepare("SELECT purchase_order_id FROM purchase_orders WHERE status = ? AND purchase_order_id LIKE ? LIMIT 10");
     $searchTerm = "%$q%";
-    $stmt->bind_param('s', $searchTerm);
+    $status = 'Open';
+    $stmt->bind_param('ss', $status, $searchTerm);
     $stmt->execute();
     $result = $stmt->get_result();
 
     $suggestions = [];
     while ($row = $result->fetch_assoc()) {
-        $suggestions[] = $row['name'];
+        $suggestions[] = $row['purchase_order_id'];
     }
 
     $stmt->close();
