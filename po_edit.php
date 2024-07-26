@@ -6,6 +6,13 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 
+if (isset($_GET['param'])) {
+    $param = htmlspecialchars($_GET['param']); // Sanitize the input to prevent XSS attacks
+    echo '<div id="id_po_code_for_edit" style="display:none;">' . htmlspecialchars($param) . '</div>';
+} else {
+    echo '<div id="id_po_code_for_edit" style="display:none;">' . htmlspecialchars(1) . '</div>';
+}
+
 ?>
 
 <?php include 'ui/header.php'; ?>
@@ -48,6 +55,12 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         height: 200px;
         border: 1px solid black;
         overflow-y: scroll;
+    }   
+    .item-details-2 {
+        font-size: 0.75rem; /* Reduced font size */
+    } 
+    .item-details-3 {
+        font-size: 0.75rem; /* Reduced font size */
     } 
     
 </style>
@@ -57,9 +70,11 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 <script src="po/po_helper.js"></script>
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function() {
-    load_page_title("Purchase Order List");
+    load_page_title("Purchase Order Update");
+
+    po_id_for_edit = document.getElementById("id_po_code_for_edit").innerHTML;
+    fetchPurchaseOrderById(po_id_for_edit);
 });
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -76,7 +91,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     liverSearch_Confiure_for_Supplier();
     liverSearch_Confiure_for_Item();
 });
-
 </script>
 
 <h5>Select PO for Update</h5>
@@ -135,14 +149,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 <h5>PO Item List</h5>
 <div class="container">
     <div class="row">
-        <div class="item-details" style="display:block;">
+        <div id="itemDetails-3" class="item-details" style="display:block;">
             <div class="row" style="display:block;">
                 <div class="col-9">
-                    <div id="id_div_po_table">
+                    <div class="item-details" id="id_div_po_table">
                     </div>
                 </div>
                 <div class="col-9">
-                    <button id="savePurchaseOrder" onclick="onClick_SavePO()" class="btn btn-secondary">Add PO</button>
+                    <button id="savePurchaseOrder" onclick="onClick_UpdatePO()" class="btn btn-secondary">Update PO</button>
                 </div>
             </div>
         </div>
@@ -150,7 +164,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 </div>
 <br>
 <h5>Select Item</h5>
-<div class="container">
+<div class="container mt-3">
     <div class="row">
         <div class="item-details" style="display:block;">
             <div class="row">
@@ -164,7 +178,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             </div>
             <div class="row" id="id_item_div_row" style="display:none;">
                 <div class="col-9">
-                    <div id="id_item_details">
+                    <div style="font-size: 0.75em;" id="id_item_details">
                     </div>
                 </div>
                 <div class="col-9">
@@ -174,5 +188,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         </div>
     </div>
 </div>
+</script>
 
 <?php include 'ui/footer.php'; ?>

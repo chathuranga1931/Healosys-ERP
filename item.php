@@ -50,11 +50,13 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     
 </style>
 
+<script src="libs/Common.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    load_page_title("Items");
+});
+</script>
 
-<h1>Item Managment</h1>
-<br>
-<div class="section_line"></div>
-<br>
 <div id="itemDetails-2" class="item-details" style="display:block;">
     <form autocomplete="off">
         <div class="row">

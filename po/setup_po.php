@@ -31,8 +31,8 @@ class SetupPurchaseOrder {
             CREATE TABLE IF NOT EXISTS purchase_order_details (
                 purchase_order_detail_id INT AUTO_INCREMENT PRIMARY KEY,
                 purchase_order_id INT,
-                item_id INT,
-                quantity INT,
+                item_id VARCHAR(15),
+                quantity DECIMAL(10, 3),
                 price DECIMAL(10, 2),
                 total_amount DECIMAL(10, 2),
                 FOREIGN KEY (purchase_order_id) REFERENCES purchase_orders(purchase_order_id),

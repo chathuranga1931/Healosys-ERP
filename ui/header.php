@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HealoSys ERP System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">    
+    <script src="libs/Common.js"></script>
     <style>
         .login-container {
             max-width: 400px;
@@ -24,46 +25,35 @@
         .section_line {
             background-color: lightgrey;
             border: 1px solid lightblue;
+        }        
+        .fixed-bottom-div {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa; /* Background color */
+            padding: 10px; /* Padding */
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Optional shadow for styling */
+        }
+        .navbar .d-flex {
+            align-items: center; /* Optional: center vertically */
+        }
+        #welcome-user {
+            margin-left: auto; /* Moves the username to the right */
         }
     </style>
 </head>
 <body>
     <div class="row">
-        <div id="id_global_footer_status">
-            <script>
-                function show_status(message, duration_sec, type) {
-                    switch(type) {
-                        case 'ERROR':
-                            var alertElement = document.getElementById('id_global_footer_status');
-                            alertElement.innerHTML = '<div class="alert alert-danger" role="alert" align="center">' + message + '</div>';
-                            break;  
-                        case 'WARNING':
-                            var alertElement = document.getElementById('id_global_footer_status');
-                            alertElement.innerHTML = '<div class="alert alert-warning" role="alert" align="center">' + message + '</div>';
-                            break;
-                        case 'SUCCESS':
-                            var alertElement = document.getElementById('id_global_footer_status');
-                            alertElement.innerHTML = '<div class="alert alert-success" role="alert" align="center">' + message + '</div>';
-                            break;
-                        case 'INFO':
-                            default:
-                            var alertElement = document.getElementById('id_global_footer_status');
-                            alertElement.innerHTML = '<div class="alert alert-info" role="alert" align="center">' + message + '</div>';
-                            break;
-                    }
-                    alertElement.style.display = 'block';
-
-                    // Set a timeout to hide the alert after 5 seconds (5000 milliseconds)
-                    setTimeout(function() {
-                        alertElement.style.display = 'none'; // Hide the alert
-                    }, duration_sec*1000);
-                }
-            </script>
+        <div id="id_global_footer_status" class="fixed-bottom-div text-center">
         </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <!-- <a class="navbar-brand" href="#">HealoSys</a> -->
         <img src="https://assets.zyrosite.com/Aq260V4Dq2CJn0lp/logo-no-background-AR07Vg4zkkiZ55j3.svg" class="login-logo" alt="Logo">
+        <div class="d-flex justify-content-center w-100">
+            <div id="id_page_title"></div>
+        </div>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -83,36 +73,117 @@
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky">
                     <ul class="nav flex-column">
+                        
+                    <li class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#submenuAct" aria-expanded="false" aria-controls="submenuAct">
+                                Activities
+                            </a>
+                            <ul class="collapse" id="submenuAct">
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#submenuAPO-1" aria-expanded="false" aria-controls="submenuAPO-1">Purchase Order</a>
+                                    <ul class="collapse" id="submenuAPO-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_activity.php?param=Place">Place</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_activity.php?param=Delivered">Delivered</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_activity.php?param=Delivered_ModifyRquired">Delivered, Modify Required</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_activity.php?param=Suspend">Suspend</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_activity.php?param=Unsuspend">Unsuspend</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_activity.php?param=Cancel">Cancel</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#submenuWO-1" aria-expanded="false" aria-controls="submenuWO-1" >Work Order</a>
+                                    <ul class="collapse" id="submenuWO-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_add.php">Start</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_list.php">Delivered</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_list.php">Complete</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_list.php">Suspend</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_list.php">Cancel</a>
+                                        </li>
+                                    </ul>                                
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#submenuSale-1" aria-expanded="false" aria-controls="submenuSale-1" >Sale</a>
+                                    <ul class="collapse" id="submenuSale-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_add.php">Start</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_list.php">Dispatch</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_list.php">Buyer Comfirmed</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#submenu1" aria-expanded="false" aria-controls="submenu1">
                                 Inventory
                             </a>
-                            <ul class="collapse" id="submenu1">
+                            <ul class="collapse" id="submenu1">    
+                                <li class="nav-item">
+                                    <a class="nav-link" href="inventory-movements.php">Movements</a>
+                                    <!-- <ul class="collapse" id="submenuIM-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_add.php">Add </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_list.php">List</a>
+                                        </li>
+                                    </ul>                                 -->
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#submenu1-1" aria-expanded="false" aria-controls="submenu1-1">Items</a>
                                     <ul class="collapse" id="submenu1-1">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="item.php">Add Items</a>
+                                            <a class="nav-link" href="item.php">Add</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="item_list.php">List Items</a>
+                                            <a class="nav-link" href="item_list.php">List</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="bom.php">Search Items</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="po_add.php">Add Update PO</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="bom.php">List POs</a>
+                                            <a class="nav-link" href="bom.php">BOMs</a>
                                         </li>
                                     </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#submenu2-1" aria-expanded="false" aria-controls="submenu2-1" >Purchase Orders</a>
+                                    <ul class="collapse" id="submenu2-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_add.php">Add </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="po_list.php">List</a>
+                                        </li>
+                                    </ul>                                
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="supplier.php">Suppliers</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="bom.php">BOMs</a>
+                                    <a class="nav-link" href="bom.php">Work Orders</a>
                                 </li>
                             </ul>
                         </li>
@@ -141,4 +212,5 @@
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div id="id_page_title"></div>
 

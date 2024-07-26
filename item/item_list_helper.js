@@ -24,7 +24,7 @@
         }
     }
 
-    function create_table_row(table_id, header_list, data_set, row_id){
+    function create_table_row(table_id, header_list, data_set, row_id, editable=null){
 
         var tbody = document.createElement('tbody');
         var dataRow = document.createElement('tr');
@@ -43,10 +43,6 @@
         tbody.appendChild(dataRow);
         var table = document.getElementById(table_id);
         table.appendChild(tbody);
-    }
-
-    function add_button_to_table_cell(table_cell_id, button_text, button_id, button_callback){
-
     }
 
     function load_catogories(callback) {
@@ -94,7 +90,7 @@
                     item.description,
                     _qty
                 ]
-                create_table_row(table_id, headers, data_set, row_id_prefix + item.item_code); 
+                create_table_row(table_id, headers, data_set, row_id_prefix + item.item_code, null); 
             }   
         });                  
     }
@@ -120,7 +116,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        on_load();
         load_items();
     });
 

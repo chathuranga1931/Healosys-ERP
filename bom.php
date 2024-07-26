@@ -49,11 +49,14 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     
 </style>
 
-<h1>Product Management</h1>
-<br>
-<div class="section_line"></div>
-<br>
-<h5>Select Product for setting Bom</h5>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    load_page_title("Bill of Material Management");
+});
+</script>
+<!-- <div class="section_line"></div> -->
+<h5>Select Product for Bom</h5>
+<!-- <div class="section_line"></div> -->
 <div id="itemDetails-2" class="item-details" style="display:block;">
     <div class="row">
         <form autocomplete="off">
@@ -121,6 +124,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 <!-- <br> -->
 
 <h5>Bill of Materials</h5>
+<!-- <br><div class="section_line"></div> -->
 <div class="item-details" style="display:block;">
     <div class="row" id="id_bom_table_raw" style="display:block;">
         <div class="col-6">
@@ -132,8 +136,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         </div>
     </div>
 </div>
-<br>
 <h5>Select Item</h5>
+<!-- <div class="section_line"></div> -->
 <div class="item-details" style="display:block;">
     <div class="row">
         <form autocomplete="off">

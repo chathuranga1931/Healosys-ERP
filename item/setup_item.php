@@ -19,7 +19,7 @@ class SetupItem {
                 category_id INT,
                 price DECIMAL(10, 2),
                 cost DECIMAL(10, 2),
-                stock_quantity INT,
+                stock_quantity DECIMAL(10, 3),
                 reorder_level INT,
                 supplier_id INT,
                 FOREIGN KEY (category_id) REFERENCES category(CategoryID),

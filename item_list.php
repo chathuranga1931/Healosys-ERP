@@ -43,24 +43,21 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     
 </style>
 
-<div id="id_page_title"> </div> 
-<br>
-<div class="section_line"></div>
-<br>
+<script src="libs/Common.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    load_page_title("Item List");
+});
+</script>
+<!-- <div class="section_line"></div> -->
 
-<div class="row">
-    <div class="col-md-9">
-        <div id="id_div_item_list"></div>
+<div id="itemDetails-2" class="item-details" style="display:block;">
+    <div class="row" >
+        <div class="col-md-9">
+            <div id="id_div_item_list"></div>
+        </div>
     </div>
 </div>
-
-<script>
-    function on_load(){
-        load_page_title('Item List');
-    }
-</script>
-
-<script src="libs/Common.js"></script>
 <script src="item/item_list_helper.js"></script>
 
 <?php include 'ui/footer.php'; ?>
