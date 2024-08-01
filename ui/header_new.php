@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HealoSys ERP System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
     <script src="libs/Common.js"></script>
     <style>
         .login-container {
@@ -43,9 +48,8 @@
     </style>
 </head>
 <body>
-    <div class="row">
-        <div id="id_global_footer_status" class="fixed-bottom-div text-center">
-        </div>
+    <div class="row" style="padding: 2px; margin: 2px; font-size: 10px;">
+        <div id="id_global_footer_status" class="fixed-bottom-div text-center" style="padding: 2px; margin: 2px; font-size: 10px;"></div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <!-- <a class="navbar-brand" href="#">HealoSys</a> -->

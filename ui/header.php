@@ -52,6 +52,7 @@
         <img src="https://assets.zyrosite.com/Aq260V4Dq2CJn0lp/logo-no-background-AR07Vg4zkkiZ55j3.svg" class="login-logo" alt="Logo">
         <div class="d-flex justify-content-center w-100">
             <div id="id_page_title"></div>
+            <div id="id_page_param_1" style="display:none;"><?php echo $_SESSION['id_page_param_1']; ?></div>
         </div>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

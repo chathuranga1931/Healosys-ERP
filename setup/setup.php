@@ -17,6 +17,7 @@ require_once('../category/setup_category.php');
 require_once('../supplier/setup_supplier.php');
 require_once('../item/setup_item.php');
 require_once('../po/setup_po.php');
+require_once('../workorders/setup_wo.php');
 
 class Setup {
     private $db;
@@ -24,8 +25,9 @@ class Setup {
     private $setup_supplier;
     private $setup_items;
     private $setup_po;
+    private $setup_wo;
 
-    private $version = '2.077'; // Define the version of the setup file
+    private $version = '2.079'; // Define the version of the setup file
 
     public function __construct() {
         $this->db = new Database();
@@ -33,6 +35,7 @@ class Setup {
         $this->setup_supplier = new SetupSupplier();
         $this->setup_items = new SetupItem();
         $this->setup_po = new SetupPurchaseOrder();
+        $this->setup_wo = new SetupWorkOrder();
     }
 
     public function run($injectTestData = false) {
@@ -44,6 +47,7 @@ class Setup {
         $this->setup_supplier->createSupplierTable(); // Call the supplier setup
         $this->setup_items->createItemTable(); // Call the item setup
         $this->setup_po->createPurchaseOrderTables(); // Call the item setup
+        $this->setup_wo->createWorkOrderTables(); // Call the item setup
 
         if ($injectTestData) {
             $this->injectTestData();
