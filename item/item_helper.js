@@ -60,6 +60,60 @@
         .catch(error => console.error('Error fetching image:', error));
     }
 
+    function fetchItemDetails_by_item_code(itemcode, arg, callback=null){
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "item/db_item_fetch_by_item_code.php?itemcode=" + itemcode, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var item = JSON.parse(xhr.responseText);
+                if(callback != null) {
+                    callback(item, arg);
+                }
+            }
+        };
+        xhr.send();
+    }    
+
+    function fetchItemDetails_by_name(itemName, arg, callback=null) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "item/db_item_fetch.php?name=" + itemName, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var item = JSON.parse(xhr.responseText);
+                if(callback != null) {
+                    callback(item, arg);
+                }                
+            }
+        };
+        xhr.send();
+    }
+
+    function is_catogory_product(catogory_id) {
+        switch(catogory_id) {
+            case 2:
+                return true;
+            case 1:
+            case 3:
+            case 4:
+            case 5:
+            default:
+                return false;
+        }    
+    }
+
+    function is_catogory_item(category_id){
+        switch(category_id) {
+            case 1:
+                return true;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            default:
+                return false;
+        }
+    }
+
     function fetchItemDetails(itemName) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "item/db_item_fetch.php?name=" + itemName, true);

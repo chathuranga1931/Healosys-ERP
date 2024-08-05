@@ -1,0 +1,55 @@
+/* styles.css */
+area {
+    cursor: pointer;
+}
+
+.area-text {
+    position: absolute;
+    font-weight: bold;
+    color: red;
+}
+
+#PO-Open-Count {
+    top: 232px;
+    left: 20px;
+}
+
+#PO-Pending-Count {
+    top: 240px;
+    left: 100px;
+}
+
+#PO-Delivered-Count {
+    top: 245px;
+    left: 190px;
+}
+
+#PO-Completed-Count {
+    top: 250px;
+    left: 275px;
+}
+
+#PO-EditRequested-Count {
+    top: 320px;
+    left: 225px;
+}
+
+#WO-Open-Count {
+    top: 270px;
+    left: 540px;
+}
+
+#WO-Manufacturing-Count {
+    top: 270px;
+    left: 630px;
+}
+
+#WO-Delivered-Count {
+    top: 270px;
+    left: 720px;
+}
+
+#WO-Complete-Count {
+    top: 270px;
+    left: 810px;
+}

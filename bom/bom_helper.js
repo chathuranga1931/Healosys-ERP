@@ -45,7 +45,7 @@
         document.getElementById("livesearch-item").innerHTML = "";
         document.getElementById("livesearch-item").style.border = "0px";
         previousValue = value; // Update previousValue to prevent unnecessary AJAX calls
-        fetch_item_details(value);
+        fetch_item_detailsBom(value);
     }
 
     // Function to fetch and update the image
@@ -74,6 +74,28 @@
         .catch(error => console.error('Error fetching image:', error));
     }
 
+    
+    function fetch_product_details_by_name(itemName, arg, callback=null) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "item/db_item_fetch.php?name=" + itemName, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var item = JSON.parse(xhr.responseText); 
+                fetchBomDetails_byItemCode(item.item_code, function(items){
+                    if(callback != null) {
+                        const data = {
+                            item: item,
+                            bom: items
+                        }
+
+                        callback(data, arg);
+                    }
+                });
+            }
+        };
+        xhr.send();
+    }
+
     function fetch_product_details(itemName) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "item/db_item_fetch.php?name=" + itemName, true);
@@ -99,7 +121,7 @@
         xhr.send();
     }
 
-    function fetch_item_details(itemName) {
+    function fetch_item_detailsBom(itemName) {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", "item/db_item_fetch.php?name=" + itemName, true);
         xhr.onreadystatechange = function() {
@@ -362,7 +384,7 @@
         xhr.send();
     }
 
-    function tableToJson(tableId) {
+    function tableToJsonBom(tableId) {
         const table = document.getElementById(tableId);
         const rows = table.querySelectorAll('tbody tr');
         const headers = table.querySelectorAll('thead th');
@@ -412,7 +434,7 @@
             return;
         }
 
-        var bom = tableToJson('id_bom_table');   
+        var bom = tableToJsonBom('id_bom_table');   
         
         const jsonString = JSON.stringify(bom);
 
@@ -459,6 +481,26 @@
         });
     }
 
+    function fetchBomDetails_byItemCode(filename, callback=null) {
+        fetch('bom/download_bom.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                'filename': filename
+            })
+        })
+        .then(response => response.text())
+        .then(result => {
+            var items = JSON.parse(result);
+            if(callback != null){
+                callback(items);
+            }
+        })
+        .catch(error => {
+        });       
+    }
     function fetchJsonFile(filename) {
         fetch('bom/download_bom.php', {
             method: 'POST',

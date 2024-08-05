@@ -11,6 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
     <script src="libs/Common.js"></script>
+    <link rel="stylesheet" href="assets/img/system_map.css">
     <style>
         .login-container {
             max-width: 400px;

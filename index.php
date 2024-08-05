@@ -72,6 +72,96 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 <script src="supplier/supplier_api_helper.js"></script>
 <script src="supplier/supplier_ui_helper.js"></script>
 <script src="libs/Print.js"></script>
+<script src="home/home_ui_helper.js"></script>
+<script src="item/item_helper.js"></script>
+<script src="bom/bom_helper.js"></script>
+
+
+
+<!-- <area target="_blank" alt="Supplier" title="Supplier" href="" coords="4,106,130,156" shape="rect">
+    <area target="" alt="Supply" title="Supply" href="" coords="142,108,273,157" shape="rect">
+    <area target="" alt="Inventory" title="Inventory" href="" coords="395,33,582,75" shape="rect">
+    <area target="" alt="Sales" title="Sales" href="" coords="628,113,708,154" shape="rect">
+    <area target="" alt="Items" title="Items" href="" coords="462,7,519,30" shape="rect">
+    <area target="" alt="Items2" title="Items2" href="" coords="608,123,551,101" shape="rect">
+    <area target="" alt="Manufacturing" title="Manufacturing" href="" coords="578,357,411,311" shape="rect">
+    <area target="" alt="WorkCenters" title="WorkCenters" href="" coords="415,364,573,403" shape="rect">
+    <area target="" alt="Products" title="Products" href="" coords="375,250,455,277" shape="rect">
+    <area target="" alt="PurchaseOrders" title="PurchaseOrders" href="" coords="140,173,282,196" shape="rect">
+    <area target="" alt="WorkOrders" title="WorkOrders" href="" coords="624,231,517,208" shape="rect">
+    <area target="" alt="SalesOrders" title="SalesOrders" href="" coords="726,189,614,161" shape="rect">
+    <area target="" alt="Customers" title="Customers" href="" coords="724,113,842,153" shape="rect">
+    <area target="" alt="Components" title="Components" href="" coords="303,106,415,129" shape="rect">
+    <area target="" alt="PO-Open" title="PO-Open" href="" coords="23,205,78,229" shape="rect">
+    <area target="" alt="PO-Pending" title="PO-Pending" href="" coords="109,206,163,231" shape="rect">
+    <area target="" alt="PO-Delivered" title="PO-Delivered" href="" coords="199,205,253,230" shape="rect">
+    <area target="" alt="PO-Complete" title="PO-Complete" href="" coords="286,205,343,230" shape="rect">
+    <area target="" alt="PO-EditRequested" title="PO-EditRequested" href="" coords="192,284,255,312" shape="rect">
+    <area target="" alt="PO-Open-Count" title="PO-Open-Count" href="" coords="62,257,3,233" shape="rect">
+    <area target="" alt="PO-Pending-Count" title="PO-Pending-Count" href="" coords="94,233,144,253" shape="rect">
+    <area target="" alt="PO-Delivered-Count" title="PO-Delivered-Count" href="" coords="186,234,233,253" shape="rect">
+    <area target="" alt="PO-Completed-Count" title="PO-Completed-Count" href="" coords="274,235,323,255" shape="rect">
+    <area target="" alt="PO-EditRequested-Count" title="PO-EditRequested-Count" href="" coords="206,316,254,334" shape="rect">
+    <area target="" alt="WO-Open" title="WO-Open" href="" coords="536,240,588,260" shape="rect">
+    <area target="" alt="WO-Manufacturing" title="WO-Manufacturing" href="" coords="620,240,666,259" shape="rect">
+    <area target="" alt="WO-Delivered" title="WO-Delivered" href="" coords="710,240,759,258" shape="rect">
+    <area target="" alt="WO-Complete" title="WO-Complete" href="" coords="800,240,846,257" shape="rect">
+    <area target="" alt="WO-Open-Count" title="WO-Open-Count" href="" coords="515,264,568,284" shape="rect">
+    <area target="" alt="WO-Manufacturing-Count" title="WO-Manufacturing-Count" href="" coords="604,266,653,285" shape="rect">
+    <area target="" alt="WO-Delivered-Count" title="WO-Delivered-Count" href="" coords="695,265,743,284" shape="rect">
+    <area target="" alt="WO-Complete-Count" title="WO-Complete-Count" href="" coords="785,265,832,283" shape="rect">
+    <area target="" alt="PO-Start" title="PO-Start" href="" coords="83,208,106,229" shape="rect">
+    <area target="" alt="PO-Delivered" title="PO-Delivered" href="" coords="170,209,192,229" shape="rect">
+    <area target="" alt="PO-Complete" title="PO-Complete" href="" coords="262,210,278,228" shape="rect">
+    <area target="" alt="PO-Cancel" title="PO-Cancel" href="" coords="" shape="rect">
+    <area target="" alt="PO-RequestToEdit" title="PO-RequestToEdit" href="" coords="259,239,272,302" shape="rect">
+    <area target="" alt="WO-Start" title="WO-Start" href="" coords="593,237,611,255" shape="rect">
+    <area target="" alt="WO-Delivered" title="WO-Delivered" href="" coords="679,237,699,257" shape="rect">
+    <area target="" alt="WO-Complete" title="WO-Complete" href="" coords="773,241,792,257" shape="rect">
+</map> -->
+
+<map name="system_diagram_map">
+    <area target="_blank" alt="Supplier" title="Supplier" coords="4,106,130,156" shape="rect">
+    <area target="" alt="Supply" title="Supply" coords="142,108,273,157" shape="rect">
+    <area target="" alt="Inventory" title="Inventory" coords="395,33,582,75" shape="rect">
+    <area target="" alt="Sales" title="Sales" coords="628,113,708,154" shape="rect">
+    <area id="id_system_map_items" target="" alt="Items" title="Items" coords="462,7,519,30" shape="rect">
+    <area target="" alt="Items2" title="Items2" coords="608,123,551,101" shape="rect">
+    <area target="" alt="Manufacturing" title="Manufacturing" coords="578,357,411,311" shape="rect">
+    <area target="" alt="WorkCenters" title="WorkCenters" coords="415,364,573,403" shape="rect">
+    <area id="id_system_map_products" target="" alt="Products" title="Products" coords="375,250,455,277" shape="rect">
+    <area target="" alt="PurchaseOrders" title="PurchaseOrders" coords="140,173,282,196" shape="rect">
+    <area id="id_system_map_workorders" target="" alt="WorkOrders" title="WorkOrders" coords="624,231,517,208" shape="rect">
+    <area target="" alt="SalesOrders" title="SalesOrders" coords="726,189,614,161" shape="rect">
+    <area target="" alt="Customers" title="Customers" coords="724,113,842,153" shape="rect">
+    <area target="" alt="Components" title="Components" coords="303,106,415,129" shape="rect">
+    <area target="" alt="PO-Open" title="PO-Open" coords="23,205,78,229" shape="rect">
+    <area target="" alt="PO-Pending" title="PO-Pending" coords="109,206,163,231" shape="rect">
+    <area target="" alt="PO-Delivered" title="PO-Delivered" coords="199,205,253,230" shape="rect">
+    <area target="" alt="PO-Complete" title="PO-Complete" coords="286,205,343,230" shape="rect">
+    <area target="" alt="PO-EditRequested" title="PO-EditRequested" coords="192,284,255,312" shape="rect">
+    <area target="" alt="PO-Open-Count" title="PO-Open-Count" coords="62,257,3,233" shape="rect">
+    <area target="" alt="PO-Pending-Count" title="PO-Pending-Count" coords="94,233,144,253" shape="rect">
+    <area target="" alt="PO-Delivered-Count" title="PO-Delivered-Count" coords="186,234,233,253" shape="rect">
+    <area target="" alt="PO-Completed-Count" title="PO-Completed-Count" coords="274,235,323,255" shape="rect">
+    <area target="" alt="PO-EditRequested-Count" title="PO-EditRequested-Count" coords="206,316,254,334" shape="rect">
+    <area id="id_system_map_wo_open" target="" alt="WO-Open" title="WO-Open" coords="536,240,588,260" shape="rect">
+    <area target="" alt="WO-Manufacturing" title="WO-Manufacturing" coords="620,240,666,259" shape="rect">
+    <area target="" alt="WO-Delivered" title="WO-Delivered" coords="710,240,759,258" shape="rect">
+    <area target="" alt="WO-Complete" title="WO-Complete" coords="800,240,846,257" shape="rect">
+    <area target="" alt="WO-Open-Count" title="WO-Open-Count" coords="515,264,568,284" shape="rect">
+    <area target="" alt="WO-Manufacturing-Count" title="WO-Manufacturing-Count" coords="604,266,653,285" shape="rect">
+    <area target="" alt="WO-Delivered-Count" title="WO-Delivered-Count" coords="695,265,743,284" shape="rect">
+    <area target="" alt="WO-Complete-Count" title="WO-Complete-Count" coords="785,265,832,283" shape="rect">
+    <area target="" alt="PO-Start" title="PO-Start" coords="83,208,106,229" shape="rect">
+    <area target="" alt="PO-Delivered" title="PO-Delivered" coords="170,209,192,229" shape="rect">
+    <area target="" alt="PO-Complete" title="PO-Complete" coords="262,210,278,228" shape="rect">
+    <area target="" alt="PO-Cancel" title="PO-Cancel" coords="" shape="rect">
+    <area target="" alt="PO-RequestToEdit" title="PO-RequestToEdit" coords="259,239,272,302" shape="rect">
+    <area target="" alt="WO-Start" title="WO-Start" coords="593,237,611,255" shape="rect">
+    <area target="" alt="WO-Delivered" title="WO-Delivered" coords="679,237,699,257" shape="rect">
+    <area target="" alt="WO-Complete" title="WO-Complete" coords="773,241,792,257" shape="rect">
+</map>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -151,6 +241,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             HomeTab_li = createNavItem_li(Tabs_level1_ul, "main-home-tab", true, "Home", "main-home", null);
             //function createTabPane_Div(parentElement, id, controlledByElement, isActive) {
             HomeContent_Div = createTabPane_Div(Content_leve1_Div, "main-home", HomeTab_li, true);
+            Home_ul = createNavTabs_ul(Content_leve1_Div, "home_ul");   
+            HomeSubmenuContent_Div = createDivWithClass_Div(HomeContent_Div, "tab-content", "home-submenu-content");
+                HomeSubmenuContent_Div.appendChild(createSystemDiagram());
 
             InventoryTab_li = createNavItem_li(Tabs_level1_ul, "main-inventory-tab", false, "Inventory", "main-inventory", null);        
             InventoryContent_Div = createTabPane_Div(Content_leve1_Div, "main-inventory", InventoryTab_li, false);
@@ -227,6 +320,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 ReportingInventoryContent_Div = createTabPane_Div(ReportingSubmenuContent_Div, "reporting-inventory-content", ReportingInventoryTab_li, false);                
         
         PurchaseOrderContentDiv = createDivWithClass_Div(PurchaseOrdersIMContent_Div, "item-details-2", "id_movement_purchase_order_l1");
+
+        on_loading_home();
+
     }    
 
 </script>

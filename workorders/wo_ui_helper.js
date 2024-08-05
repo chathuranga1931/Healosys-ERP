@@ -350,6 +350,26 @@ function createWOAddForm() {
 }
 
 
+function print_pdf_table_wo_items(doc, x, y, data_set){
+    
+    var table_id = 'id_div_wo_table_for_wo_edit';
+    // data_set = tableToJsonItemAll(table_id); //'id_div_wo_table_for_wo_edit'); 
+    var remove_column1=4;
+    var remove_column2=null;
+    
+    // Define the columns for the table
+    const columns = [
+        { header: 'Item-Code', dataKey: 'item_code' },
+        { header: 'Name', dataKey: 'name' },
+        { header: 'Description', dataKey: 'description' },
+        { header: 'Qty', dataKey: 'quantity' }
+    ];
+    
+    jsonToPdfTable(doc, columns, data_set, y);   
+
+    const received = 0;
+}
+
 function print_pdf_header_wo_details(doc, x, y, gap_1, doc_id, PageTitle){
 
     wo_date = document.getElementById('id_order_date_for_wo_edit').value;
@@ -365,12 +385,187 @@ function print_pdf_header_wo_details(doc, x, y, gap_1, doc_id, PageTitle){
     displacement2 = print_pdf_add_line_right(x, displacement2.y, gap_1, "WO Date : " + wo_date , 10, doc);    
     displacement2 = print_pdf_add_line_right(x, displacement2.y, gap_1, "WO Est. Date : " + wo_est_date , 10, doc);
     displacement2 = print_pdf_add_line_right(x, displacement2.y, gap_1, " " , 10, doc);
-    displacement2 = print_pdf_add_line_right(x, displacement2.y, gap_1, "#: " + doc_id, 10, doc);
+    displacement2 = print_pdf_add_line_right(x, displacement2.y, gap_1, "# " + doc_id, 10, doc);
+}
+
+// Function to remove an object by key
+function removeByitemcode(array, keyToRemove) {
+    const index = array.findIndex(element => element.item_code === keyToRemove);
+    if (index !== -1) {
+        array.splice(index, 1);
+    }
+    return array;
+}
+
+function update_item_list_processing_array(item, array){
+    const index = array.findIndex(element => element.item_code === item.item_code);
+    if (index !== -1) {
+        array[index].quantity = parseInt(array[index].quantity, 10) +  parseInt(item.quantity, 10);
+    }
+    else{
+        array.push(item);
+    }
+}
+
+function update_product_list_max_count_array(item, array){
+    const index = array.findIndex(element => element.item_code === item.item_code);
+    if (index !== -1) {
+        array[index].quantity = parseInt(array[index].quantity, 10) +  parseInt(item.quantity, 10);
+    }
+    else{
+        array.push(item);
+    }
+}
+
+function fetchItemAndProductDetails(data_set){
+    return new Promise((resolve, reject) => {
+
+        const product_list_max_count = [];
+        const product_list_processing = [];
+        const item_list_processing = [];
+
+        var received = 0;
+        for(var i = 0; i < data_set.length; i++){
+            fetchItemDetails_by_name(data_set[i].name, data_set, function(item, data_set){
+                received++;
+                var qty = 0;
+                for(var j = 0; j < data_set.length; j++){
+                    if(item.item_code === (data_set[j])["item-code"]){
+                        qty += parseInt(data_set[j].qty, 10);
+                    }
+                }
+    
+                if(is_catogory_product(item.category_id)){
+                    
+                    const data = {
+                        item_code : item.item_code,
+                        name: item.name,
+                        category_id : item.category_id,
+                        quantity : qty,                        
+                        description : item.description
+                    }
+                    product_list_max_count.push(data);
+                    product_list_processing.push(data);
+                }
+                else if(is_catogory_item(item.category_id)){
+                    const data = {
+                        item_code : item.item_code,
+                        name: item.name,
+                        category_id : item.category_id,
+                        quantity : qty,                        
+                        description : item.description
+                    }
+                    item_list_processing.push(data);
+                }
+                else{
+    
+                }
+
+                if(received >= data_set.length){
+                    data = {
+                        product_list_max_count : product_list_max_count,
+                        product_list_processing : product_list_processing,
+                        item_list_processing : item_list_processing
+                    }
+                    resolve(data);
+                }
+            });        
+        }
+    });
+}
+
+function get_only_item_list(){
+    
+    return new Promise((resolve, reject) => {
+
+        var table_id = 'id_div_wo_table_for_wo_edit';
+        data_set = tableToJsonItemAll(table_id); //'id_div_wo_table_for_wo_edit'); 
+
+        fetchItemAndProductDetails(data_set).then(result => {       
+
+            const product_list_max_count = result.product_list_max_count;
+            const product_list_processing = result.product_list_processing;
+            const item_list_processing = result.item_list_processing;
+
+            var all_completed = false;
+            var idx = 0;
+            var expected_receive_count1 = 0;
+            var expected_receive_count2 = 0;
+            while(!all_completed){
+
+                if(product_list_processing.length == 0){
+                    all_completed = true;
+                    break;
+                }
+
+                if(idx >= product_list_processing.length){
+                    idx = 0;
+                    is_full_cycle_completed = true;
+                    continue;
+                }
+
+                var item = product_list_processing[idx];
+                idx++;
+                removeByitemcode(product_list_processing, item.item_code);
+
+                item.quantity = parseInt(item.quantity, 10);
+                if(item.quantity == 0){
+                    continue;
+                }
+
+                expected_receive_count1++;
+                const arg = item;
+                fetch_product_details_by_name(item.name, arg, function(product, arg){
+                    expected_receive_count1--;
+                    product.bom.forEach(function(bom_item){ 
+                        expected_receive_count2++;               
+                        fetchItemDetails_by_item_code(bom_item.itemCode, arg, function(bom_item_details, arg){                        
+                            expected_receive_count2--;   
+                            if(is_catogory_product(bom_item_details.category_id)){                        
+                                const data = {
+                                    item_code : bom_item.itemCode,
+                                    name: bom_item_details.name,
+                                    category_id : bom_item_details.category_id,
+                                    quantity : parseInt(bom_item.quantity, 10) * arg.quantity,
+                                    description : bom_item_details.description
+                                }
+                                update_product_list_max_count_array(data, product_list_max_count);
+                            }
+                            else if(is_catogory_item(bom_item_details.category_id)){                      
+                                const data = {
+                                    item_code : bom_item.itemCode,
+                                    name: bom_item_details.name,
+                                    category_id : bom_item_details.category_id,
+                                    quantity : parseInt(bom_item.quantity, 10) * arg.quantity,
+                                    description : bom_item_details.description
+                                }
+                                update_item_list_processing_array(data, item_list_processing);
+                            }
+                            else{
+                
+                            }
+
+                            if(expected_receive_count1 == 0 && expected_receive_count2 == 0){
+                                // alert("All data received");
+
+                                data = {
+                                    product_list_max_count : product_list_max_count,
+                                    product_list_processing : product_list_processing,
+                                    item_list_processing : item_list_processing
+                                }
+                                resolve(data);
+                            }
+                        });                
+                    })
+                });
+            }    
+        });
+    });
 }
 
 function print_pdf_table_wo(doc, x, y){
     
-    var table_id = 'id_div_wo_table_for_wo_edit'
+    var table_id = 'id_div_wo_table_for_wo_edit';
     data_set = tableToJsonItemAll(table_id); //'id_div_wo_table_for_wo_edit'); 
     var remove_column1=4;
     var remove_column2=null;
@@ -380,13 +575,17 @@ function print_pdf_table_wo(doc, x, y){
     if(remove_column1) removeColumn(columns, remove_column1);
     if(remove_column2) removeColumn(columns, remove_column2);
     
-    jsonToPdfTable(doc, columns, data_set, y);  
+    jsonToPdfTable(doc, columns, data_set, y);   
+
+    const received = 0;
 }
 
 function print_table_for_work_order(PageTitle, doc_id){
+
     print_pdf_header(40, 15, 2, function(doc, displacement){
         print_pdf_header_wo_details(doc, 40, 15, 2, doc_id, PageTitle);
-        print_pdf_table_wo(doc, 40, displacement.y);
+        print_pdf_table_wo(doc, 40, displacement.y);  
+        
         // doc.save(doc_id + '.pdf');
         doc.autoPrint();
 
@@ -402,6 +601,34 @@ function print_table_for_work_order(PageTitle, doc_id){
         window.open(blobUrl, '_blank');
         // link.click();
     });
+
+    get_only_item_list().then(result => {
+
+        const product_list_max_count = result.product_list_max_count;
+        const product_list_processing = result.product_list_processing;
+        const item_list_processing = result.item_list_processing;
+
+        print_pdf_header(40, 15, 2, function(doc, displacement){
+            print_pdf_header_wo_details(doc, 40, 15, 2, doc_id, PageTitle + "-Items");
+            print_pdf_table_wo_items(doc, 40, displacement.y, item_list_processing);  
+            
+            // doc.save(doc_id + '.pdf');
+            doc.autoPrint();
+    
+            // Generate the PDF and create a Blob URL
+            const blobUrl = doc.output('bloburl');
+    
+            // Create an invisible anchor element
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = doc_id+'.pdf'; // Set the custom file name
+    
+            // Open the Blob URL in a new tab and trigger the print dialog
+            window.open(blobUrl, '_blank');
+            // link.click();
+        });
+        
+    });    
 }
 
 function on_click_print_wo_for_wo_edit() {
